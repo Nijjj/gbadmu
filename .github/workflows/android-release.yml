@@ -1,4 +1,4 @@
-name: Android Release
+name: Android Release APK
 
 on:
   workflow_dispatch:
@@ -6,8 +6,12 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: android-release-apk
+  cancel-in-progress: false
+
 jobs:
-  build:
+  build-release-apk:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,8 +26,6 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: 8.10.2
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
@@ -35,16 +37,20 @@ jobs:
             ndk;27.1.12297006
             cmake;3.22.1
 
-      - name: Assemble release APK
+      - name: Build release APK
         run: ./gradlew :app:assembleRelease
 
-      - name: List release outputs
-        run: find app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -print
-
-      - name: Stage release APK
+      - name: Locate release APK
         run: |
+          set -eu
+          APK_PATH=$(find app/build/outputs/apk/release -maxdepth 1 -type f -name '*.apk' | head -n 1)
+          if [ -z "${APK_PATH:-}" ]; then
+            echo "No release APK found under app/build/outputs/apk/release" >&2
+            exit 1
+          fi
           mkdir -p dist
-          cp app/build/outputs/apk/release/*.apk dist/y2kboy-release.apk
+          cp "$APK_PATH" dist/y2kboy-release.apk
+          echo "APK_PATH=$APK_PATH"
           ls -lah dist
 
       - name: Publish GitHub Release
@@ -53,6 +59,6 @@ jobs:
           tag_name: android-latest
           name: Y2KBoy latest
           files: dist/y2kboy-release.apk
-          fail_on_unmatched_files: true
+          overwrite_files: true
           generate_release_notes: false
           make_latest: true
