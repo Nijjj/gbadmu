@@ -1,0 +1,1 @@
+-keep class app.y2kboy.nativebridge.** { *; }
