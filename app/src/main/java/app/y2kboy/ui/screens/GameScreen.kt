@@ -252,13 +252,13 @@ private fun InGameMenu(
                     ChromeButton(label = "Resume", onClick = onResume) {
                         Icon(Icons.Outlined.PlayArrow, contentDescription = null)
                     }
-                    ChromeButton(label = "Save", onClick = { bridge.saveState(0) }) {
+                    ChromeButton(label = "Save", onClick = { bridge.saveState(0); Unit }) {
                         Icon(Icons.Outlined.Save, contentDescription = null)
                     }
-                    ChromeButton(label = "Load", onClick = { bridge.loadState(0) }) {
+                    ChromeButton(label = "Load", onClick = { bridge.loadState(0); Unit }) {
                         Icon(Icons.Outlined.Download, contentDescription = null)
                     }
-                    ChromeButton(label = "Shot", onClick = { bridge.captureScreenshot() }) {
+                    ChromeButton(label = "Shot", onClick = { bridge.captureScreenshot(); Unit }) {
                         Icon(Icons.Outlined.CameraAlt, contentDescription = null)
                     }
                     ChromeButton(label = "1x", onClick = { bridge.setFastForward(false, 1.0f) }) {
