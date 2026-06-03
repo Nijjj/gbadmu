@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: android
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -30,4 +27,3 @@ jobs:
             cmake;3.22.1
       - run: gradle :app:assembleDebug :app:lintDebug
       - run: gradle :app:testDebugUnitTest
-
