@@ -38,10 +38,10 @@ jobs:
             cmake;3.22.1
 
       - name: Assemble debug APK
-        run: gradle :app:assembleDebug
+        run: ./gradlew :app:assembleDebug
 
       - name: Run lint
-        run: gradle :app:lintDebug
+        run: ./gradlew :app:lintDebug
 
       - name: Run unit tests
-        run: gradle :app:testDebugUnitTest
+        run: ./gradlew :app:testDebugUnitTest
