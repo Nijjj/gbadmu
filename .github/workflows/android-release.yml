@@ -38,9 +38,12 @@ jobs:
       - name: Assemble release APK
         run: ./gradlew :app:assembleRelease
 
+      - name: List release outputs
+        run: find app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \)
+
       - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
           name: y2kboy-release-apk
-          path: app/build/outputs/apk/release/*.apk
+          path: app/build/outputs/**/*.apk
           if-no-files-found: error
